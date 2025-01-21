@@ -17,12 +17,12 @@ import { addStock } from "@/store/StockSlice";
 const SliderCollection = (props) => {
   const dispatch = useDispatch();
   const [items, setItems] = useState([
-    { id: "1", type: "pe", summary: "PE Ratio", "value": 33, "priority": 1 },
-    { id: "2", type: "debt/equity ratio", summary: "Debt to Equity", "value": 33, "priority": 2 },
-    { id: "3", type: "dividend yield", summary: "Dividend Yield", "value": 33, "priority": 3 },
-    { id: "4", type: "peg_ratio", summary: "PEG Ratio", "value": 33, "priority": 4 },
-    { id: "5", type: "roe", summary: "Return on Equity", "value": 33, "priority": 5 },
-    { id: "6", type: "roce", summary: "Return on Capital Employed", "value": 33, "priority": 6 },
+    { id: "1", type: "pe", summary: "t shows how much investors are willing to pay for each unit of a company's profit.", "value": 33, "priority": 1 },
+    { id: "2", type: "debt/equity ratio", summary: "It shows how much debt a company has compared to its own money (equity)", "value": 33, "priority": 2 },
+    { id: "3", type: "dividend yield", summary: "It shows how much money you earn (as a percentage) in dividends for every ₹100 you invest in the stock", "value": 33, "priority": 3 },
+    { id: "4", type: "peg_ratio", summary: "It combines the PE ratio with the company’s growth rate to check if a stock is fairly priced.", "value": 33, "priority": 4 },
+    { id: "5", type: "roe", summary: "It shows how much profit a company makes for every ₹1 of its own money (equity).", "value": 33, "priority": 5 },
+    { id: "6", type: "roce", summary: "It shows how much profit a company makes for every ₹1 of total money (capital) it uses, including both debt and equity.", "value": 33, "priority": 6 },
   ]);
 
   const handleDragEnd = (event) => {
