@@ -4,7 +4,7 @@ import StoreProvider from "@/store/StoreProvider";
 import { Toaster } from "sonner";
 
 
-import { Poppins, Roboto } from '@next/font/google';
+import { Poppins, Roboto } from 'next/font/google';
 
 
 // Import fonts
