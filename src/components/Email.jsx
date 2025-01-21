@@ -80,8 +80,7 @@ const Email = (props) => {
     Enter your Email Below
   </div>
   <div className="text-center">
-    get daily mail on your stocks 
-  </div>
+  Get daily mail on Nifty 100, Nifty Midcap 100, and Nifty Smallcap 100.  </div>
     <Input type="email" placeholder="Email" onChangeCapture={e => setEmail(e.currentTarget.value)}/>
     <Button 
   onClick={addEmailToDatabase} 
