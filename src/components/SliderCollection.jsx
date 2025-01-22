@@ -1,66 +1,48 @@
-"use client"
-import { useState } from "react";
-import SingleSlider from "./SingleSlider"
-import {
-  DndContext,
-  closestCenter,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  rectSortingStrategy,
-  useSortable,
-  arrayMove,
-} from "@dnd-kit/sortable";
+"use client";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addStock } from "@/store/StockSlice";
+import { useDrag, useDrop } from "react-dnd";
+import SingleSlider from "./SingleSlider";
 
-const SliderCollection = (props) => {
+// Define the item type
+const ItemType = "ITEM";
+
+const SliderCollection = () => {
   const dispatch = useDispatch();
   const [items, setItems] = useState([
-    { id: "1", type: "pe", summary: "t shows how much investors are willing to pay for each unit of a company's profit.", "value": 33, "priority": 1 },
-    { id: "2", type: "debt/equity ratio", summary: "It shows how much debt a company has compared to its own money (equity)", "value": 33, "priority": 2 },
-    { id: "3", type: "dividend yield", summary: "It shows how much money you earn (as a percentage) in dividends for every ₹100 you invest in the stock", "value": 33, "priority": 3 },
-    { id: "4", type: "peg_ratio", summary: "It combines the PE ratio with the company’s growth rate to check if a stock is fairly priced.", "value": 33, "priority": 4 },
-    { id: "5", type: "roe", summary: "It shows how much profit a company makes for every ₹1 of its own money (equity).", "value": 33, "priority": 5 },
-    { id: "6", type: "roce", summary: "It shows how much profit a company makes for every ₹1 of total money (capital) it uses, including both debt and equity.", "value": 33, "priority": 6 },
+    { id: "1", type: "pe", summary: "It shows how much investors are willing to pay for each unit of a company's profit.", value: 33, priority: 1, field: "current_pe", radio: "higher" },
+    { id: "2", type: "debt/equity ratio", summary: "It shows how much debt a company has compared to its own money (equity)", value: 33, priority: 2, field: "debt_equity_ratio", radio: "higher" },
+    { id: "3", type: "dividend yield", summary: "It shows how much money you earn (as a percentage) in dividends for every ₹100 you invest in the stock", value: 33, priority: 3, field: "div_yield", radio: "higher" },
+    { id: "4", type: "peg_ratio", summary: "It combines the PE ratio with the company’s growth rate to check if a stock is fairly priced.", value: 33, priority: 4, field: "peg_ratio", radio: "higher" },
+    { id: "5", type: "roe", summary: "It shows how much profit a company makes for every ₹1 of its own money (equity).", value: 33, priority: 5, field: "roe", radio: "higher" },
+    { id: "6", type: "roce", summary: "It shows how much profit a company makes for every ₹1 of total money (capital) it uses, including both debt and equity.", value: 33, priority: 6, field: "roce", radio: "higher" }
   ]);
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-
-    if (active.id !== over.id) {
-      const oldIndex = items.findIndex((item) => item.id === active.id);
-      const newIndex = items.findIndex((item) => item.id === over.id);
-
-      setItems((prev) => {
-        const updatedItems = arrayMove(prev, oldIndex, newIndex);
-        const prioritizedItems = updatedItems.map((item, index) => ({
-          ...item,
-          priority: index + 1,
-        }));
-
-        dispatch(addStock(prioritizedItems));
-
-        return prioritizedItems;
-      });
-    }
+  const moveItem = (fromIndex, toIndex) => {
+    const updatedItems = [...items];
+    const [movedItem] = updatedItems.splice(fromIndex, 1);
+    updatedItems.splice(toIndex, 0, movedItem);
+    const prioritizedItems = updatedItems.map((item, index) => ({
+      ...item,
+      priority: index + 1,
+    }));
+    setItems(prioritizedItems);
+    dispatch(addStock(prioritizedItems)); // Sync with Redux store
   };
 
   return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext items={items} strategy={rectSortingStrategy}>
-        <div className="grid grid-cols-3 gap-4 p-4 animate-wave hover:animate-none ">
-          {items.map((item, index) => (
-            <SortableItem key={item.id} id={item.id} animationClass={getAnimationClass(index)} >
-              <SingleSlider type={item.type} summary={item.summary} id={item.id} />
-            </SortableItem>
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className="grid grid-cols-3 gap-4 p-4 animate-wave hover:animate-none">
+      {items.map((item, index) => (
+        <DraggableItem
+          key={item.id}
+          index={index}
+          item={item}
+          moveItem={moveItem}
+          animationClass={getAnimationClass(index)}
+        />
+      ))}
+    </div>
   );
 };
 
@@ -82,23 +64,43 @@ const getAnimationClass = (index) => {
   }
 };
 
-const SortableItem = ({ id, children, animationClass }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+const DraggableItem = ({ item, index, moveItem, animationClass }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemType,
+    item: { index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  const [, drop] = useDrop(() => ({
+    accept: ItemType,
+    hover: (draggedItem) => {
+      if (draggedItem.index !== index) {
+        moveItem(draggedItem.index, index);
+        draggedItem.index = index;
+      }
+    },
+  }));
 
   const dynamicStyles = {
-    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-    transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (
     <div
-      ref={setNodeRef}
+      ref={(node) => drag(drop(node))}
       style={dynamicStyles}
-      {...attributes}
-      {...listeners}
       className={`text-center ${animationClass}`}
     >
-      {children}
+      <div
+      >
+        <SingleSlider
+          type={item.type}
+          summary={item.summary}
+          id={item.id}
+        />
+      </div>
     </div>
   );
 };

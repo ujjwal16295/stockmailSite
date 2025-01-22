@@ -21,7 +21,10 @@ const Footer = () => {
     >
       <div className="text-white relative z-10 group">
         <span className="text-lg">
-          {["T", "h", "a", "n", "k", " ", "Y", "o", "u"].map((char, index) => (
+        <div className="flex  gap-2">
+
+        <div>
+        {["T", "h", "a", "n", "k"].map((char, index) => (
             <span
               key={index}
               className="inline-block transition-transform duration-300 ease-in-out group-hover:animate-rotateInCircle"
@@ -29,6 +32,20 @@ const Footer = () => {
               {char}
             </span>
           ))}
+        </div>
+        <div>
+        {["Y", "o", "u"].map((char, index) => (
+            <span
+              key={index}
+              className="inline-block transition-transform duration-300 ease-in-out group-hover:animate-rotateInCircle"
+            >
+              {char}
+            </span>
+          ))}
+        </div>
+
+        </div>
+          
         </span>
       </div>
     </div>

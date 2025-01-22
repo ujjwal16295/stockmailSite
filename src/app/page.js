@@ -3,9 +3,14 @@ import Email from "@/components/Email";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SliderCollection from "@/components/SliderCollection";
+
 import { ToastContainer } from "react-toastify";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export default function Home() {
+
+
   // const flash=useSelector(state=>state.submit)
 
   // console.log(flash["submit"])
@@ -28,7 +33,9 @@ export default function Home() {
   </div>
 </div>
       <div className="" style={{ fontFamily: 'var(--font-roboto)' }}>
-        <SliderCollection/>
+      <DndProvider backend={HTML5Backend}>
+      <SliderCollection /> {/* This component uses react-dnd */}
+    </DndProvider>        
       </div>
       <div style={{ fontFamily: 'var(--font-roboto)' }}>
          <Email/>
