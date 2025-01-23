@@ -25,10 +25,10 @@ export default function Home() {
 
       <div id="Body" className="my-32 flex flex-col justify-evenly items-center gap-10" >
       <div className="flex flex-col justify-center items-center gap-4" style={{ fontFamily: 'var(--font-poppins)' }}>
-  <div className="text-6xl hover:animate-wave " >
+  <div className="text-6xl hover:animate-wave text-center px-4 " >
     Choose Your Parameters
   </div>
-  <div className="hover:animate-wave">
+  <div className="hover:animate-wave text-center px-4">
     by moving the slider and by drag drop the box to set priority of Parameters
   </div>
 </div>

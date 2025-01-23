@@ -32,17 +32,19 @@ const SliderCollection = () => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4 animate-wave hover:animate-none">
-      {items.map((item, index) => (
-        <DraggableItem
-          key={item.id}
-          index={index}
-          item={item}
-          moveItem={moveItem}
-          animationClass={getAnimationClass(index)}
-        />
-      ))}
-    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 animate-wave hover:animate-none">
+    {items.map((item, index) => (
+      <DraggableItem
+        key={item.id}
+        index={index}
+        item={item}
+        moveItem={moveItem}
+        animationClass={getAnimationClass(index)}
+      />
+    ))}
+  </div>
+  
+  
   );
 };
 

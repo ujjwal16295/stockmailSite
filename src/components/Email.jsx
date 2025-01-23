@@ -75,7 +75,7 @@ const Email = (props) => {
 //   },[email])
 
     return (      
-  <div className="flex flex-col gap-4">
+  <div className="flex flex-col gap-4 px-4">
   <div className="text-3xl text-center">
     Enter your Email Below
   </div>
