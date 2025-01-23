@@ -19,7 +19,8 @@ const SingleSlider = (props) => {
   const [initialValue, setInitialValue] = useState([33]);
 
   useEffect(() => {
-    dispatch(updateStockValue([props.type, initialValue[0]]));
+    console.log(initialValue[0][0])
+    dispatch(updateStockValue([props.type, initialValue[0][0]]));
   }, [initialValue[0]]);
 
  
