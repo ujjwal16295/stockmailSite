@@ -57,7 +57,7 @@ useEffect(()=>{console.log(selectedValue)},[selectedValue])
   };
 
   return (
-    <div className={`${visibleStatus==true?"bg-blue-400":"bg-blue-100"} flex flex-col justify-center  gap-4 border-4 border-black hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-white p-6 rounded-xl shadow-custom`}>
+    <div className={`${visibleStatus==true?"bg-blue-400 hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-white":"bg-blue-100"} flex flex-col justify-center  gap-4 border-4 border-black  p-6 rounded-xl shadow-custom`}>
 
     <div className=" flex flex-col items-start justify-center gap-4">
       <div>
@@ -131,8 +131,16 @@ useEffect(()=>{console.log(selectedValue)},[selectedValue])
   
     </div>
     <div>
+    <HoverCard>
+          <HoverCardTrigger>
+          <SelectedButton type={props.type}/>
 
-<SelectedButton type={props.type}/>
+          </HoverCardTrigger>
+          <HoverCardContent className="border-2 border-black">
+          if don't want this parameter then unselect the box
+          </HoverCardContent>
+        </HoverCard>
+
 </div>
 
     </div>
