@@ -6,21 +6,23 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { updateRadioValue, updateStockValue } from "@/store/StockSlice"
+import SelectedButton from "./SelectedButton"
 
 
 
 
 
 const SingleSlider = (props) => {
+  const visibleStatus=useSelector(state=>state.stocks)["visible"][props.type] 
   const dispatch = useDispatch();
   const maxValue = 100;
   const [initialValue, setInitialValue] = useState([33]);
 
   useEffect(() => {
-    console.log(initialValue[0][0])
-    dispatch(updateStockValue([props.type, initialValue[0][0]]));
+    console.log(initialValue[0])
+    dispatch(updateStockValue([props.type, initialValue[0]]));
   }, [initialValue[0]]);
 
  
@@ -55,7 +57,9 @@ useEffect(()=>{console.log(selectedValue)},[selectedValue])
   };
 
   return (
-    <div className="bg-blue-400 flex flex-col justify-center items-start gap-4 border-4 border-black hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-white p-6 rounded-xl shadow-custom">
+    <div className={`${visibleStatus==true?"bg-blue-400":"bg-blue-100"} flex flex-col justify-center  gap-4 border-4 border-black hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-white p-6 rounded-xl shadow-custom`}>
+
+    <div className=" flex flex-col items-start justify-center gap-4">
       <div>
         <HoverCard>
           <HoverCardTrigger>{props.type}</HoverCardTrigger>
@@ -124,6 +128,12 @@ useEffect(()=>{console.log(selectedValue)},[selectedValue])
           </HoverCardContent>
         </HoverCard>
       </div>
+  
+    </div>
+    <div>
+
+<SelectedButton type={props.type}/>
+</div>
 
     </div>
   );

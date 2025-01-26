@@ -39,8 +39,12 @@ const Email = (props) => {
       });
       return; // Stop further execution
     }
-  
-    const errorMessage = await StockService.addStockToDatabase(email, { userStockData });
+    // Filter out objects where `visible` is false
+    const filteredStockData = userStockData.filter(stock => stock.visible !== false); 
+    console.log(filteredStockData)
+    console.log(userStockData)
+
+    const errorMessage = await StockService.addStockToDatabase(email, { filteredStockData });
     console.log(errorMessage);
     setLoading(false)
   
