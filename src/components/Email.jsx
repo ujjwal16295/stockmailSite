@@ -7,11 +7,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { submitYesOrNo } from "@/store/ButtonSlice"
 import { toast } from "sonner"
 import Loading from "./Spinner"
+import AlertBox from "./AlertBox"
 
 
 
 const Email = (props) => {
   // const dispatch = useDispatch()
+  const [open,setOpen]=useState(false)
   const userStockData=useSelector(state=>state.stocks)["stock"]
   const [loading,setLoading]=useState(false)
   const [email,setEmail] = useState("")
@@ -49,20 +51,28 @@ const Email = (props) => {
     setLoading(false)
   
     if (errorMessage["error"] === true) {
-      // Show error toast
-      toast.error(`❌ ${errorMessage["message"]}`, {
-        style: {
-          border: "1px solid #f44336",
-          padding: "16px",
-          color: "#fff",
-          backgroundColor: "#f44336",
-          borderRadius: "8px",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-        },
-        duration: 4000, // Display for 4 seconds
-        icon: "⚠️", // Optional: Additional icon
-      });
-    } else {
+
+      if(errorMessage["message"]=="Document already exists"){
+        setOpen(true)
+
+      }else{
+
+        // Show error toast
+        toast.error(`❌ ${errorMessage["message"]}`, {
+          style: {
+            border: "1px solid #f44336",
+            padding: "16px",
+            color: "#fff",
+            backgroundColor: "#f44336",
+            borderRadius: "8px",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          },
+          duration: 4000, // Display for 4 seconds
+          icon: "⚠️", // Optional: Additional icon
+        });
+      }
+
+      } else {
       // Show success toast
       toast.success("🎉 Your email has been saved successfully!", {
         style: {
@@ -98,6 +108,7 @@ const Email = (props) => {
 >
   Submit
 </Button>}
+<AlertBox open={open} setOpen={setOpen} email={email} data={userStockData.filter(stock => stock.visible !== false)}/>
   </div>
 
     )

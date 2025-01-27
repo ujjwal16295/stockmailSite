@@ -1,5 +1,5 @@
 import { db } from "./FirebaseConfig";
-import { collection, doc  ,setDoc,getDoc} from "firebase/firestore";
+import { collection, doc  ,setDoc,getDoc, deleteDoc, updateDoc} from "firebase/firestore";
 
 const ref= collection(db,"stocks")
 
@@ -24,7 +24,19 @@ class StockService{
     }
   };
 
-
+  updateStockInDatabase = async (docName, data) => {
+    try {
+      const docRef = doc(db, "Email", docName);
+  
+      // Update the existing document with the provided fields
+      await updateDoc(docRef, {data}); // This will only update the fields specified in 'data'
+      console.log("Document successfully updated!");
+      return { error: false, message: "Document updated successfully" };
+    } catch (error) {
+      console.error("Error in updating the document: ", error);
+      return { error: true, message: "Error occurred while updating the document" };
+    }
+  };
 
 
 }
